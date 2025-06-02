@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 AI KOC Support - Chat Interface</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <h1>AI KOC Support</h1>
+                </div>
+                <div class="status">
+                    <span class="status-indicator online"></span>
+                    <span>Online</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <!-- Welcome Message -->
+                <div class="message bot-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            <h3>🎉 Chào mừng bạn đến với AI KOC Support!</h3>
+                            <p>Tôi có thể giúp bạn:</p>
+                            <ul>
+                                <li>📝 Hướng dẫn đăng ký tài khoản</li>
+                                <li>🔐 Đăng nhập và bảo mật</li>
+                                <li>💳 Thanh toán và giao dịch</li>
+                                <li>🔧 Khắc phục lỗi app chậm</li>
+                                <li>📞 Thông tin liên hệ hỗ trợ</li>
+                            </ul>
+                            <p><strong>Hãy thử hỏi:</strong> "App chạy chậm quá" hoặc "Hướng dẫn đăng ký" nhé! 😊</p>
+                        </div>
+                        <div class="message-time">Vừa xong</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <div class="chat-input-box">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Nhập câu hỏi của bạn..." 
+                        rows="1"
+                        maxlength="1000"></textarea>
+                    <button id="sendButton" class="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <div class="quick-questions">
+                        <span class="quick-label">💡 Câu hỏi nhanh:</span>
+                        <button class="quick-btn" data-question="App chạy chậm quá">App chậm</button>
+                        <button class="quick-btn" data-question="Hướng dẫn đăng ký tài khoản">Đăng ký</button>
+                        <button class="quick-btn" data-question="Cách thanh toán bằng thẻ">Thanh toán</button>
+                        <button class="quick-btn" data-question="Quên mật khẩu">Quên MK</button>
+                    </div>
+                    <div class="settings">
+                        <label class="streaming-toggle">
+                            <input type="checkbox" id="streamingToggle" checked>
+                            <span class="toggle-slider"></span>
+                            Streaming
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-chart-bar"></i> Thống Kê</h3>
+            </div>
+            <div class="stats-container" id="statsContainer">
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalDocs">-</div>
+                        <div class="stat-label">Tài liệu</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-comments"></i></div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalTopics">-</div>
+                        <div class="stat-label">Chủ đề</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="responseTime">-</div>
+                        <div class="stat-label">Phản hồi</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="accuracy">-</div>
+                        <div class="stat-label">Độ chính xác</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h4><i class="fas fa-info-circle"></i> API Info</h4>
+                <div class="api-info">
+                    <div class="api-item">
+                        <strong>Endpoint:</strong><br>
+                        <code>http://localhost:8000</code>
+                    </div>
+                    <div class="api-item">
+                        <strong>Model:</strong><br>
+                        <code>koc-assistant</code>
+                    </div>
+                    <div class="api-item">
+                        <strong>Features:</strong><br>
+                        <span class="feature-tag">SSE Streaming</span>
+                        <span class="feature-tag">Smart AI</span>
+                        <span class="feature-tag">Vietnamese</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h4><i class="fas fa-code"></i> Test API</h4>
+                <div class="test-buttons">
+                    <button class="test-btn" onclick="testHealth()">
+                        <i class="fas fa-heart"></i> Health
+                    </button>
+                    <button class="test-btn" onclick="testModels()">
+                        <i class="fas fa-brain"></i> Models
+                    </button>
+                    <button class="test-btn" onclick="testStats()">
+                        <i class="fas fa-chart-line"></i> Stats
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-robot fa-spin"></i>
+            <p>AI đang suy nghĩ...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="chat.js"></script>
+</body>
+</html> 

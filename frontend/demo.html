@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 AI KOC Support - API Demo & Testing</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .endpoint-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .endpoint-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .method-badge {
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .get { background: #4CAF50; }
+        .post { background: #2196F3; }
+        
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+        }
+        
+        .test-section h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        
+        .input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .test-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .test-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .response-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(248, 249, 255, 0.8);
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .status-200 { background: #4CAF50; }
+        .status-error { background: #f44336; }
+        
+        .response-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .examples {
+            background: rgba(255, 251, 235, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #FF9800;
+            margin: 15px 0;
+        }
+        
+        .examples h5 {
+            color: #F57C00;
+            margin-bottom: 10px;
+        }
+        
+        .example-item {
+            margin: 8px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .example-item:hover {
+            background: #f0f0f0;
+        }
+        
+        .streaming-demo {
+            background: rgba(230, 255, 230, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+            margin: 15px 0;
+        }
+        
+        .streaming-output {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .endpoint-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .endpoint-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-robot"></i> AI KOC Support API Demo</h1>
+            <p>🧪 Test tất cả endpoints của API với giao diện trực quan</p>
+            <p><strong>API Base URL:</strong> <code>http://localhost:8000</code></p>
+        </div>
+
+        <!-- Endpoints Grid -->
+        <div class="endpoint-grid">
+            <!-- Health Check -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method-badge get">GET</span>
+                    <span class="endpoint-url">/health</span>
+                    <i class="fas fa-heart-pulse" style="color: #4CAF50;"></i>
+                </div>
+                
+                <p>Kiểm tra trạng thái sức khỏe của API server.</p>
+                
+                <div class="test-section">
+                    <button class="test-button" onclick="testHealth()">
+                        <i class="fas fa-play"></i> Test Health
+                    </button>
+                </div>
+                
+                <div class="examples">
+                    <h5>📝 Expected Response:</h5>
+                    <div class="example-item">
+                        {"status": "healthy", "timestamp": "2024-01-01T10:00:00Z"}
+                    </div>
+                </div>
+                
+                <div id="health-response" class="response-section" style="display: none;">
+                    <div class="response-header">
+                        <strong>Response:</strong>
+                        <span id="health-status" class="status-badge">200</span>
+                    </div>
+                    <div id="health-content" class="response-content"></div>
+                </div>
+            </div>
+
+            <!-- Models List -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method-badge get">GET</span>
+                    <span class="endpoint-url">/models</span>
+                    <i class="fas fa-brain" style="color: #2196F3;"></i>
+                </div>
+                
+                <p>Lấy danh sách các AI models có sẵn.</p>
+                
+                <div class="test-section">
+                    <button class="test-button" onclick="testModels()">
+                        <i class="fas fa-play"></i> Get Models
+                    </button>
+                </div>
+                
+                <div class="examples">
+                    <h5>📝 Expected Response:</h5>
+                    <div class="example-item">
+                        {"object": "list", "data": [{"id": "koc-assistant", "object": "model"}]}
+                    </div>
+                </div>
+                
+                <div id="models-response" class="response-section" style="display: none;">
+                    <div class="response-header">
+                        <strong>Response:</strong>
+                        <span id="models-status" class="status-badge">200</span>
+                    </div>
+                    <div id="models-content" class="response-content"></div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method-badge get">GET</span>
+                    <span class="endpoint-url">/stats</span>
+                    <i class="fas fa-chart-bar" style="color: #FF9800;"></i>
+                </div>
+                
+                <p>Xem thống kê và metrics của hệ thống.</p>
+                
+                <div class="test-section">
+                    <button class="test-button" onclick="testStats()">
+                        <i class="fas fa-play"></i> Get Stats
+                    </button>
+                </div>
+                
+                <div class="examples">
+                    <h5>📝 Expected Response:</h5>
+                    <div class="example-item">
+                        {"total_documents": 50, "supported_topics": 9, "response_time": "< 1s"}
+                    </div>
+                </div>
+                
+                <div id="stats-response" class="response-section" style="display: none;">
+                    <div class="response-header">
+                        <strong>Response:</strong>
+                        <span id="stats-status" class="status-badge">200</span>
+                    </div>
+                    <div id="stats-content" class="response-content"></div>
+                </div>
+            </div>
+
+            <!-- Chat Completions -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method-badge post">POST</span>
+                    <span class="endpoint-url">/chat/completions</span>
+                    <i class="fas fa-comments" style="color: #9C27B0;"></i>
+                </div>
+                
+                <p>Gửi tin nhắn và nhận phản hồi từ AI (hỗ trợ streaming).</p>
+                
+                <div class="test-section">
+                    <div class="input-group">
+                        <label>Model:</label>
+                        <select id="chat-model">
+                            <option value="koc-assistant">koc-assistant</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Message:</label>
+                        <textarea id="chat-message" placeholder="Nhập tin nhắn của bạn...">App chạy chậm quá</textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>
+                            <input type="checkbox" id="chat-stream" checked> Enable Streaming
+                        </label>
+                    </div>
+                    
+                    <button class="test-button" onclick="testChat()">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                    <button class="test-button" onclick="clearChatResponse()">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+                
+                <div class="examples">
+                    <h5>📝 Try These Examples:</h5>
+                    <div class="example-item" onclick="setChatMessage(this.textContent)">
+                        App chạy chậm quá
+                    </div>
+                    <div class="example-item" onclick="setChatMessage(this.textContent)">
+                        Hướng dẫn đăng ký tài khoản
+                    </div>
+                    <div class="example-item" onclick="setChatMessage(this.textContent)">
+                        Cách thanh toán bằng thẻ
+                    </div>
+                    <div class="example-item" onclick="setChatMessage(this.textContent)">
+                        Quên mật khẩu phải làm sao
+                    </div>
+                </div>
+                
+                <div class="streaming-demo">
+                    <h5>🔄 Streaming Output:</h5>
+                    <div id="streaming-output" class="streaming-output"></div>
+                </div>
+                
+                <div id="chat-response" class="response-section" style="display: none;">
+                    <div class="response-header">
+                        <strong>Final Response:</strong>
+                        <span id="chat-status" class="status-badge">200</span>
+                    </div>
+                    <div id="chat-content" class="response-content"></div>
+                </div>
+            </div>
+
+            <!-- Upload -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method-badge post">POST</span>
+                    <span class="endpoint-url">/upload</span>
+                    <i class="fas fa-upload" style="color: #607D8B;"></i>
+                </div>
+                
+                <p>Upload file PDF để bổ sung knowledge base.</p>
+                
+                <div class="test-section">
+                    <div class="input-group">
+                        <label>Select PDF File:</label>
+                        <input type="file" id="upload-file" accept=".pdf">
+                    </div>
+                    
+                    <button class="test-button" onclick="testUpload()">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload File
+                    </button>
+                </div>
+                
+                <div class="examples">
+                    <h5>📝 Supported Formats:</h5>
+                    <div class="example-item">
+                        ✅ PDF files only (.pdf)
+                    </div>
+                    <div class="example-item">
+                        📄 Max file size: 10MB
+                    </div>
+                </div>
+                
+                <div id="upload-response" class="response-section" style="display: none;">
+                    <div class="response-header">
+                        <strong>Response:</strong>
+                        <span id="upload-status" class="status-badge">200</span>
+                    </div>
+                    <div id="upload-content" class="response-content"></div>
+                </div>
+            </div>
+
+            <!-- Custom cURL -->
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method-badge post">CURL</span>
+                    <span class="endpoint-url">Custom Request</span>
+                    <i class="fas fa-terminal" style="color: #795548;"></i>
+                </div>
+                
+                <p>Tạo và test custom cURL commands.</p>
+                
+                <div class="test-section">
+                    <div class="input-group">
+                        <label>Endpoint:</label>
+                        <input type="text" id="curl-endpoint" value="/chat/completions" placeholder="/endpoint">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Method:</label>
+                        <select id="curl-method">
+                            <option value="GET">GET</option>
+                            <option value="POST" selected>POST</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>JSON Body:</label>
+                        <textarea id="curl-body" placeholder='{"key": "value"}'>{
+  "model": "koc-assistant",
+  "messages": [{"role": "user", "content": "Hello"}],
+  "stream": false
+}</textarea>
+                    </div>
+                    
+                    <button class="test-button" onclick="testCustom()">
+                        <i class="fas fa-rocket"></i> Send Request
+                    </button>
+                    <button class="test-button" onclick="generateCurl()">
+                        <i class="fas fa-copy"></i> Generate cURL
+                    </button>
+                </div>
+                
+                <div id="curl-command" class="examples" style="display: none;">
+                    <h5>📋 Generated cURL Command:</h5>
+                    <div class="example-item" id="curl-text" style="white-space: pre-wrap;"></div>
+                </div>
+                
+                <div id="custom-response" class="response-section" style="display: none;">
+                    <div class="response-header">
+                        <strong>Response:</strong>
+                        <span id="custom-status" class="status-badge">200</span>
+                    </div>
+                    <div id="custom-content" class="response-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+
+        // Utility functions
+        function showResponse(elementId, status, content, isError = false) {
+            const responseEl = document.getElementById(`${elementId}-response`);
+            const statusEl = document.getElementById(`${elementId}-status`);
+            const contentEl = document.getElementById(`${elementId}-content`);
+            
+            responseEl.style.display = 'block';
+            statusEl.textContent = status;
+            statusEl.className = `status-badge ${isError ? 'status-error' : 'status-200'}`;
+            contentEl.textContent = JSON.stringify(content, null, 2);
+        }
+
+        // Test Health endpoint
+        async function testHealth() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                showResponse('health', response.status, data);
+            } catch (error) {
+                showResponse('health', 'ERROR', {error: error.message}, true);
+            }
+        }
+
+        // Test Models endpoint
+        async function testModels() {
+            try {
+                const response = await fetch(`${API_BASE}/models`);
+                const data = await response.json();
+                showResponse('models', response.status, data);
+            } catch (error) {
+                showResponse('models', 'ERROR', {error: error.message}, true);
+            }
+        }
+
+        // Test Stats endpoint
+        async function testStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const data = await response.json();
+                showResponse('stats', response.status, data);
+            } catch (error) {
+                showResponse('stats', 'ERROR', {error: error.message}, true);
+            }
+        }
+
+        // Test Chat endpoint
+        async function testChat() {
+            const model = document.getElementById('chat-model').value;
+            const message = document.getElementById('chat-message').value;
+            const isStreaming = document.getElementById('chat-stream').checked;
+            const streamingOutput = document.getElementById('streaming-output');
+            
+            if (!message.trim()) {
+                alert('Vui lòng nhập tin nhắn!');
+                return;
+            }
+            
+            streamingOutput.textContent = '';
+            
+            const body = {
+                model: model,
+                messages: [{role: 'user', content: message}],
+                stream: isStreaming
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/chat/completions`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(body)
+                });
+                
+                if (isStreaming) {
+                    // Handle streaming response
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let buffer = '';
+                    let fullResponse = '';
+                    
+                    streamingOutput.textContent = 'Streaming response...\n\n';
+                    
+                    while (true) {
+                        const { value, done } = await reader.read();
+                        if (done) break;
+                        
+                        buffer += decoder.decode(value, { stream: true });
+                        const lines = buffer.split('\n');
+                        buffer = lines.pop();
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                const data = line.slice(6);
+                                if (data === '[DONE]') break;
+                                
+                                try {
+                                    const parsed = JSON.parse(data);
+                                    if (parsed.choices?.[0]?.delta?.content) {
+                                        const content = parsed.choices[0].delta.content;
+                                        fullResponse += content;
+                                        streamingOutput.textContent += content;
+                                        streamingOutput.scrollTop = streamingOutput.scrollHeight;
+                                    }
+                                } catch (e) {
+                                    // Skip invalid JSON
+                                }
+                            }
+                        }
+                    }
+                    
+                    showResponse('chat', response.status, {
+                        choices: [{message: {content: fullResponse}}]
+                    });
+                } else {
+                    // Handle non-streaming response
+                    const data = await response.json();
+                    streamingOutput.textContent = 'Non-streaming mode - response:\n\n' + 
+                        data.choices[0].message.content;
+                    showResponse('chat', response.status, data);
+                }
+            } catch (error) {
+                streamingOutput.textContent = 'Error: ' + error.message;
+                showResponse('chat', 'ERROR', {error: error.message}, true);
+            }
+        }
+
+        // Test Upload endpoint
+        async function testUpload() {
+            const fileInput = document.getElementById('upload-file');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Vui lòng chọn file PDF!');
+                return;
+            }
+            
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                alert('Chỉ hỗ trợ file PDF!');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch(`${API_BASE}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                showResponse('upload', response.status, data);
+            } catch (error) {
+                showResponse('upload', 'ERROR', {error: error.message}, true);
+            }
+        }
+
+        // Test Custom endpoint
+        async function testCustom() {
+            const endpoint = document.getElementById('curl-endpoint').value;
+            const method = document.getElementById('curl-method').value;
+            const bodyText = document.getElementById('curl-body').value;
+            
+            let body = null;
+            if (method === 'POST' && bodyText.trim()) {
+                try {
+                    body = JSON.parse(bodyText);
+                } catch (e) {
+                    alert('JSON body không hợp lệ!');
+                    return;
+                }
+            }
+            
+            try {
+                const options = {
+                    method: method,
+                    headers: method === 'POST' ? {'Content-Type': 'application/json'} : {}
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                
+                const response = await fetch(`${API_BASE}${endpoint}`, options);
+                const data = await response.json();
+                showResponse('custom', response.status, data);
+            } catch (error) {
+                showResponse('custom', 'ERROR', {error: error.message}, true);
+            }
+        }
+
+        // Generate cURL command
+        function generateCurl() {
+            const endpoint = document.getElementById('curl-endpoint').value;
+            const method = document.getElementById('curl-method').value;
+            const bodyText = document.getElementById('curl-body').value;
+            
+            let curlCommand = `curl -X ${method} "${API_BASE}${endpoint}"`;
+            
+            if (method === 'POST') {
+                curlCommand += ` \\\n  -H "Content-Type: application/json"`;
+                if (bodyText.trim()) {
+                    curlCommand += ` \\\n  -d '${bodyText.trim()}'`;
+                }
+            }
+            
+            const curlEl = document.getElementById('curl-command');
+            const curlTextEl = document.getElementById('curl-text');
+            
+            curlTextEl.textContent = curlCommand;
+            curlEl.style.display = 'block';
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(curlCommand).then(() => {
+                alert('cURL command copied to clipboard!');
+            });
+        }
+
+        // Helper functions
+        function setChatMessage(message) {
+            document.getElementById('chat-message').value = message;
+        }
+
+        function clearChatResponse() {
+            document.getElementById('streaming-output').textContent = '';
+            document.getElementById('chat-response').style.display = 'none';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🧪 API Demo Page Loaded');
+            
+            // Auto-test health on load
+            setTimeout(testHealth, 1000);
+        });
+    </script>
+</body>
+</html> 

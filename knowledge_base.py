@@ -5,6 +5,7 @@ from typing import List, Dict, Optional
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from datetime import datetime
+from pdf_processor import PDFProcessor
 
 class KnowledgeBase:
     """Quản lý knowledge base cho AI Assistant"""
@@ -15,6 +16,9 @@ class KnowledgeBase:
         
         # Khởi tạo embedding model
         self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+        
+        # Khởi tạo PDF processor
+        self.pdf_processor = PDFProcessor()
         
         # Tạo hoặc lấy collection
         collection_name = "app_guide_knowledge"
@@ -42,6 +46,38 @@ class KnowledgeBase:
         # File để lưu metadata
         self.metadata_file = os.path.join(persist_directory, "metadata.json")
         self.load_metadata()
+    
+    def load_pdf(self, pdf_path: str) -> bool:
+        """
+        Load PDF file vào knowledge base
+        
+        Args:
+            pdf_path: Đường dẫn đến file PDF
+            
+        Returns:
+            True nếu thành công, False nếu thất bại
+        """
+        try:
+            if not os.path.exists(pdf_path):
+                print(f"❌ File không tồn tại: {pdf_path}")
+                return False
+            
+            # Extract và chunk PDF
+            print(f"📄 Processing PDF: {pdf_path}")
+            text_chunks = self.pdf_processor.extract_and_chunk_pdf(pdf_path)
+            
+            # Lấy tên file làm document name
+            document_name = os.path.basename(pdf_path).replace('.pdf', '')
+            
+            # Thêm vào knowledge base
+            self.add_documents(text_chunks, document_name)
+            
+            print(f"✅ Successfully loaded {len(text_chunks)} chunks from {pdf_path}")
+            return True
+            
+        except Exception as e:
+            print(f"❌ Error loading PDF {pdf_path}: {e}")
+            return False
     
     def load_metadata(self):
         """Tải metadata từ file"""
