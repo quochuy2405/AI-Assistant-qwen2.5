@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-🌐 Frontend Server for AI KOC Support Chat Interface
-Start the web interface to interact with the API
+🌐 Frontend Server for ZiZi AI Chat Interface
+Start the web interface to interact with the AI Assistant
 """
 
 import http.server
@@ -24,8 +24,8 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 def main():
-    parser = argparse.ArgumentParser(description='Start AI KOC Support Frontend Server')
-    parser.add_argument('--port', type=int, default=3000, help='Port to serve on (default: 3000)')
+    parser = argparse.ArgumentParser(description='Start ZiZi AI Frontend Server')
+    parser.add_argument('--port', type=int, default=3001, help='Port to serve on (default: 8501)')
     parser.add_argument('--host', default='localhost', help='Host to serve on (default: localhost)')
     parser.add_argument('--no-browser', action='store_true', help='Do not open browser automatically')
     
@@ -44,7 +44,7 @@ def main():
         print("❌ index.html not found in frontend directory!")
         return
     
-    print("🌐 Starting AI KOC Support Frontend Server...")
+    print("🤖 Starting ZiZi AI Frontend Server...")
     print("=" * 50)
     print(f"🏠 Host: {args.host}")
     print(f"🔌 Port: {args.port}")
@@ -57,9 +57,9 @@ def main():
         with socketserver.TCPServer((args.host, args.port), CustomHTTPRequestHandler) as httpd:
             url = f"http://{args.host}:{args.port}"
             
-            print(f"✅ Server started successfully!")
+            print(f"✅ ZiZi AI Frontend started successfully!")
             print(f"🚀 Open your browser and go to: {url}")
-            print("📝 Make sure your API server is running on http://localhost:8000")
+            print("📝 Make sure ZiZi AI API server is running on http://localhost:8000")
             print("🛑 Press Ctrl+C to stop the server")
             
             # Open browser automatically
@@ -74,7 +74,7 @@ def main():
             httpd.serve_forever()
             
     except KeyboardInterrupt:
-        print("\n🛑 Server stopped by user")
+        print("\n🛑 ZiZi AI Frontend stopped by user")
     except OSError as e:
         if "Address already in use" in str(e):
             print(f"❌ Port {args.port} is already in use!")

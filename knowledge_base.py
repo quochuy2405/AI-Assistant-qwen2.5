@@ -47,6 +47,42 @@ class KnowledgeBase:
         self.metadata_file = os.path.join(persist_directory, "metadata.json")
         self.load_metadata()
     
+    def load_txt(self, txt_path: str) -> bool:
+        """
+        Load TXT file vào knowledge base
+        
+        Args:
+            txt_path: Đường dẫn đến file TXT
+            
+        Returns:
+            True nếu thành công, False nếu thất bại
+        """
+        try:
+            if not os.path.exists(txt_path):
+                print(f"❌ File không tồn tại: {txt_path}")
+                return False
+            
+            # Đọc file txt
+            print(f"📄 Processing TXT: {txt_path}")
+            with open(txt_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Chia thành chunks bằng PDF processor (reuse chunking logic)
+            text_chunks = self.pdf_processor._create_chunks(content)
+            
+            # Lấy tên file làm document name
+            document_name = os.path.basename(txt_path).replace('.txt', '')
+            
+            # Thêm vào knowledge base
+            self.add_documents(text_chunks, document_name)
+            
+            print(f"✅ Successfully loaded {len(text_chunks)} chunks from {txt_path}")
+            return True
+            
+        except Exception as e:
+            print(f"❌ Error loading TXT {txt_path}: {e}")
+            return False
+    
     def load_pdf(self, pdf_path: str) -> bool:
         """
         Load PDF file vào knowledge base

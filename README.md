@@ -1,157 +1,245 @@
-# 🤖 AI Hỗ Trợ KOC - Qwen2.5 Edition
+# 🤖 ZiZi AI - Trợ Lý AI Thông Minh
 
-**Hệ thống AI hỗ trợ KOC (Key Opinion Consumer) sử dụng Qwen2.5 để học từ tài liệu PDF và trả lời câu hỏi hướng dẫn app bằng tiếng Việt.**
+**ZiZi AI** là một hệ thống trợ lý AI thông minh được phát triển với Qwen2.5, hỗ trợ streaming chat và tích hợp knowledge base từ tài liệu text.
+
+![ZiZi AI](https://img.shields.io/badge/ZiZi-AI-blue?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.8+-green?style=for-the-badge)
+![FastAPI](https://img.shields.io/badge/FastAPI-Latest-red?style=for-the-badge)
+![Qwen2.5](https://img.shields.io/badge/Qwen2.5-7B-orange?style=for-the-badge)
 
 ## ✨ Tính Năng Chính
 
-### 🧠 **AI Model: Qwen2.5-7B**
-- **Đa ngôn ngữ xuất sắc** - Tiếng Việt tự nhiên
-- **Instruction-following** - Hiểu và làm theo hướng dẫn chính xác  
-- **Context window lớn** - Xử lý tài liệu dài
-- **Reasoning mạnh** - Phân tích và giải thích chi tiết
-- **Hoàn toàn miễn phí** - Chạy local, không cần internet
-
-### 📚 **Xử Lý Tài Liệu**
-- Upload nhiều file PDF cùng lúc
-- Trích xuất và phân đoạn text thông minh
-- Vector database với ChromaDB
-- Tìm kiếm semantic với SentenceTransformer
-
-### 💬 **Chat Interface**
-- Giao diện thân thiện với Streamlit
-- Chat real-time với AI
-- Lịch sử hội thoại
-- Context-aware responses
-
-### 📊 **Thống Kê & Quản Lý**
-- Theo dõi số lượng tài liệu
-- Thống kê sử dụng
-- Quản lý knowledge base
+- 🤖 **AI Assistant**: Sử dụng Qwen2.5 qua Ollama
+- 💬 **Streaming Chat**: Trả lời real-time với SSE
+- 📚 **Knowledge Base**: Tích hợp tài liệu training từ txt files
+- 🌐 **Web UI**: Giao diện chat hiện đại, thân thiện
+- 🔌 **REST API**: OpenAI-compatible endpoints
+- 🇻🇳 **Tiếng Việt**: Hỗ trợ hoàn toàn tiếng Việt
 
 ## 🚀 Cài Đặt Nhanh
 
-### **Cách 1: Setup Tự Động (Khuyên dùng)**
+### 1. Yêu Cầu Hệ Thống
 ```bash
-chmod +x setup.sh && ./setup.sh
+# Python 3.8+
+python --version
+
+# Ollama (để chạy Qwen2.5)
+# Tải tại: https://ollama.ai
 ```
 
-### **Cách 2: Từng Bước**
-
-#### 1. Cài đặt Ollama và Qwen2.5
+### 2. Setup Project
 ```bash
-# macOS
-brew install ollama
-brew services start ollama
+# Clone repository
+git clone <repository-url>
+cd AI-Support
 
-# Linux  
-curl -fsSL https://ollama.com/install.sh | sh
-ollama serve &
+# Cài đặt dependencies
+pip install -r requirements_api.txt
 
-# Tải model Qwen2.5
+# Cài đặt Ollama model
 ollama pull qwen2.5:7b
 ```
 
-#### 2. Cài đặt Python Dependencies
+### 3. Load Training Data
 ```bash
-pip install -r requirements.txt
+# Load tài liệu Zizi vào knowledge base
+python load_zizi_training.py
 ```
 
-#### 3. Chạy ứng dụng
+### 4. Khởi Chạy Hệ Thống
+
+#### Option 1: Full Stack (API + Frontend)
 ```bash
-python run_app.py
+python run_zizi_ai.py
 ```
 
-## 🌐 Sử Dụng
-
-1. **Truy cập**: http://localhost:8501
-2. **Tab "📚 Tải Tài Liệu"**: Upload file PDF hướng dẫn
-3. **Tab "💬 Trò Chuyện"**: Chat với AI bằng tiếng Việt
-4. **Tab "📊 Thống Kê"**: Xem thông tin sử dụng
-
-## 🎯 Ví Dụ Câu Hỏi
-
-- "Hướng dẫn đăng ký tài khoản mới"
-- "Cách thanh toán trong app"  
-- "Làm sao để đổi mật khẩu?"
-- "Tính năng nào mới nhất?"
-
-## 📦 Cấu Trúc Dự Án
-
-```
-AI-Support/
-├── app.py                 # Ứng dụng Streamlit chính
-├── ai_assistant.py        # AI Assistant với Qwen2.5
-├── pdf_processor.py       # Xử lý PDF
-├── knowledge_base.py      # Vector database
-├── config.py             # Cấu hình
-├── run_app.py            # Script khởi động
-├── requirements.txt       # Dependencies
-├── setup.sh              # Script setup tự động
-├── install_ollama.sh     # Script cài Ollama
-└── README.md             # Tài liệu này
-```
-
-## 🔧 Cấu Hình
-
-### Models được hỗ trợ:
-- **qwen2.5:7b** (Khuyên dùng - Tiếng Việt xuất sắc)
-- llama3.1 (Chất lượng cao)
-- mistral:instruct (Ổn định)
-- phi3 (Nhỏ gọn)
-- gemma2 (Google)
-
-### Tối ưu hóa Qwen2.5:
-- Temperature: 0.3 (ổn định)
-- Max tokens: 400 (đầy đủ)
-- Context search: 5 documents
-- Vietnamese-optimized prompts
-
-## 📋 Yêu Cầu Hệ Thống
-
-- **Python**: 3.8+
-- **RAM**: 8GB+ 
-- **Disk**: 10GB+ (cho models)
-- **OS**: Windows/macOS/Linux
-
-## 🐛 Xử Lý Lỗi
-
-### Lỗi Ollama không kết nối:
+#### Option 2: Chạy Riêng Lẻ
 ```bash
-ollama serve
-ollama pull qwen2.5:7b
+# Terminal 1: API Server
+python start_api_server.py
+
+# Terminal 2: Frontend Server  
+python start_frontend.py
 ```
 
-### Lỗi Module not found:
-```bash
-pip install -r requirements.txt --force-reinstall
+## 🌐 Truy Cập
+
+- **Frontend UI**: http://localhost:8501
+- **API Server**: http://localhost:8000
+- **API Docs**: http://localhost:8000/docs
+
+## 📁 Cấu Trúc Project
+
+```
+ZiZi-AI/
+├── 🤖 api/                          # API Backend
+│   ├── models.py                    # Data models
+│   ├── responses.py                 # AI response logic
+│   ├── config.py                    # Configuration
+│   └── utils.py                     # Utilities
+├── 🌐 frontend/                     # Web Frontend
+│   ├── index.html                   # Main chat UI
+│   ├── chat.js                      # Chat functionality
+│   └── style.css                    # Modern UI styles
+├── 📚 knowledge_base.py             # Knowledge base management
+├── 📄 huong-dan-su-dung-zizi-project-day-du.txt  # Training data
+├── 🚀 start_api_server.py           # API launcher
+├── 🌐 start_frontend.py             # Frontend launcher
+├── 📖 load_zizi_training.py         # Training script
+└── 🏃 run_zizi_ai.py               # Full stack launcher
 ```
 
-### Lỗi Model không tìm thấy:
+## 🔌 API Endpoints
+
+### Chat Completions
 ```bash
+POST /chat/completions
+Content-Type: application/json
+
+{
+  "messages": [
+    {"role": "user", "content": "ZiZi project là gì?"}
+  ],
+  "stream": true
+}
+```
+
+### Health Check
+```bash
+GET /health
+```
+
+### Models List
+```bash
+GET /models
+```
+
+### Statistics
+```bash
+GET /stats
+```
+
+## 💬 Cách Sử Dụng
+
+### 1. Chat với ZiZi AI
+- Mở http://localhost:8501
+- Nhập câu hỏi về Zizi Project
+- Nhận phản hồi thông minh với knowledge base
+
+### 2. API Integration
+```python
+import requests
+
+response = requests.post("http://localhost:8000/chat/completions", 
+    json={
+        "messages": [{"role": "user", "content": "Hướng dẫn cài đặt Zizi?"}],
+        "stream": False
+    })
+
+print(response.json())
+```
+
+### 3. Streaming Chat
+```javascript
+const eventSource = new EventSource('/chat/completions?stream=true');
+eventSource.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log(data.choices[0].delta.content);
+};
+```
+
+## 🛠️ Configuration
+
+### API Settings (api/config.py)
+```python
+# Ollama settings
+OLLAMA_BASE_URL = "http://localhost:11434"
+OLLAMA_MODEL = "qwen2.5:7b"
+
+# API settings  
+API_HOST = "0.0.0.0"
+API_PORT = 8000
+```
+
+### Frontend Settings (start_frontend.py)
+```python
+# Frontend server
+FRONTEND_PORT = 8501
+```
+
+## 📚 Knowledge Base
+
+ZiZi AI sử dụng ChromaDB để lưu trữ và tìm kiếm knowledge base:
+
+- **Embedding**: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+- **Vector Store**: ChromaDB
+- **Chunking**: 1000 characters với overlap 200
+
+### Thêm Tài Liệu Mới
+```python
+from knowledge_base import KnowledgeBase
+
+kb = KnowledgeBase()
+kb.load_txt("new_document.txt")
+```
+
+## 🔧 Troubleshooting
+
+### Lỗi Ollama Connection
+```bash
+# Kiểm tra Ollama running
 ollama list
-ollama pull qwen2.5:7b
+
+# Restart Ollama
+ollama serve
 ```
 
-## 🤝 Đóng Góp
+### Lỗi Knowledge Base
+```bash
+# Reset knowledge base
+rm -rf chroma_db/
+python load_zizi_training.py
+```
 
-1. Fork repository
+### Lỗi Port Conflicts
+```bash
+# Kiểm tra port sử dụng
+lsof -i :8000
+lsof -i :8501
+
+# Kill process
+kill -9 <PID>
+```
+
+## 🤝 Contributing
+
+1. Fork project
 2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Mở Pull Request
 
-## 📜 License
+## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## 📞 Hỗ Trợ
+## 📞 Contact
 
-- **GitHub Issues**: Tạo issue mới
-- **Email**: Gửi kèm log lỗi
-- **Docs**: Xem README_SETUP.md cho hướng dẫn chi tiết
+**ZiZi AI Team**
+- 📧 Email: support@zizi-ai.com
+- 🌐 Website: https://zizi-ai.com
+- 📱 Discord: ZiZi AI Community
+
+## 🙏 Acknowledgments
+
+- [Qwen2.5](https://github.com/QwenLM/Qwen2.5) - Powerful LLM
+- [Ollama](https://ollama.ai) - Local LLM runtime
+- [FastAPI](https://fastapi.tiangolo.com) - Modern API framework
+- [ChromaDB](https://www.trychroma.com) - Vector database
+- [Streamlit](https://streamlit.io) - Web UI framework
 
 ---
 
-⭐ **Made with ❤️ for Vietnamese KOC Community**
-
-🤖 **Powered by Qwen2.5 - The Best Open Source Model for Vietnamese** 🇻🇳 
+<div align="center">
+  <strong>🤖 ZiZi AI - Trợ Lý AI Thông Minh Cho Mọi Người 🇻🇳</strong>
+</div> 

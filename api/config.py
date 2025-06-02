@@ -1,6 +1,6 @@
 # API Configuration
-API_TITLE = "AI KOC Support API"
-API_DESCRIPTION = "API hỗ trợ KOC với Streaming SSE như OpenAI"
+API_TITLE = "ZiZi AI API"
+API_DESCRIPTION = "API Trợ Lý AI Thông Minh với Qwen2.5 và Streaming SSE"
 API_VERSION = "1.0.0"
 
 # Server Configuration
@@ -9,8 +9,8 @@ PORT = 8000
 RELOAD = True
 
 # Model Configuration
-DEFAULT_MODEL = "koc-assistant"
-MODEL_OWNER = "koc-support"
+DEFAULT_MODEL = "zizi-ai"
+MODEL_OWNER = "zizi-team"
 
 # CORS Configuration
 CORS_ORIGINS = ["*"]

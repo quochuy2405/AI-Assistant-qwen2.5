@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script để chạy AI KOC Support API Server
+Script để chạy ZiZi AI API Server
 """
 
 import uvicorn
@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 def main():
-    parser = argparse.ArgumentParser(description='AI KOC Support API Server')
+    parser = argparse.ArgumentParser(description='ZiZi AI API Server')
     parser.add_argument('--host', default='0.0.0.0', help='Host address')
     parser.add_argument('--port', type=int, default=8000, help='Port number')
     parser.add_argument('--reload', action='store_true', help='Enable auto-reload')
@@ -17,7 +17,7 @@ def main():
     
     args = parser.parse_args()
     
-    print("🚀 Starting AI KOC Support API Server...")
+    print("🤖 Starting ZiZi AI API Server...")
     print(f"📡 Host: {args.host}")
     print(f"🔌 Port: {args.port}")
     print(f"🔄 Reload: {args.reload}")
@@ -36,7 +36,7 @@ def main():
             log_level="info"
         )
     except KeyboardInterrupt:
-        print("\n🛑 Server stopped by user")
+        print("\n🛑 ZiZi AI API Server stopped by user")
     except Exception as e:
         print(f"❌ Error starting server: {e}")
         sys.exit(1)
