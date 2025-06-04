@@ -9,7 +9,7 @@ class ChatCompletionRequest(BaseModel):
     model: str = "koc-assistant"
     messages: List[ChatMessage]
     stream: bool = True
-    max_tokens: Optional[int] = 500
+    max_tokens: Optional[int] = 200
     temperature: Optional[float] = 0.7
     top_p: Optional[float] = 0.9
 
